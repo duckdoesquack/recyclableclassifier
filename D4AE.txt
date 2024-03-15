@@ -1,0 +1,246 @@
+D4AE
+
+1 - importing the codes
+import pandas as pd
+from sklearn.neighbors import KNeighborsClassifier
+from sklearn.model_selection import train_test_split
+from sklearn.preprocessing import StandardScaler
+
+2 - import given dataset
+from google.colab import drive 
+drive.mount('')
+
+- assigning column names
+Names = ["age", "gender", "ht", "wt", "fat", "dias","sys","grip","sitbend","situp","broad","class"]
+df = pd.read_csv("")
+df.columns = Names
+df.head()
+
+3 - showing the shape of df 
+df.shape
+
+4 - displaying first five records n analyze the data
+df.head(5)
+
+5 - assigning the correct columns to x_values and y_values from df
+X = df.drop('class',axis = 1)
+y = df['class']
+x_values = X
+y_values = y
+
+6 - feature extract the column 'class', showing value counts under each class
+value_counts = y_values.value_counts()
+print(value_counts)
+
+7 - splitting data 80% training 20% testing and display shape for train and test data
+x_train, x_test, y_train, y_test = train_test_split(X,y,test_size = 0.2)
+x_train.shape
+x_test.shape
+
+8 - converting train data using standardscaler and display first 5 values
+scaler = StandardScaler()
+x_train_scale = scaler.fit_transform(x_train)
+x_train_scale[:5]
+
+9 - converting test data using StandardScaler and display first 5 values
+x_test_scale = scaler.fit_transform(x_test)
+x_test_scale[:5]
+
+10 - train a k-nearest neighbors algorithm with dataset
+KNN = KNeighborsClassifier(n_neighbors = 5)
+KNN.fit(x_train_scale, y_train)
+
+11 - generate y_predict using trained algorithm
+y_predict = KNN.predict(x_test_scale)
+
+12 - display y_predict
+y_predict
+
+13 - evaluate model using confusion matrix
+from sklearn.metrics import confusion_matrix
+print(confusion_matrix(y_test, y_predict))
+
+14 - evaluate the accuracy of predictions
+from sklearn.metrics import accuracy_score
+accuracy_score(y_test,y_predict)
+
+
+mock test C 1
+
+from google.colab import drive
+drive.mount('')
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+import os
+
+- loading dataset
+df = pd.read_csv('')
+df.head()
+
+- preprocessing and feature extraction
+df = df['open'].values
+df = df.reshape(-1,1)
+print(df.shape)
+df[:5]
+
+- splitting the data 80% training 20% testing
+dataset_train = np.array(df[:int(df.shape[0]*0.8)])
+dataset_test = np.array(df[int(df.shape[0]*0.8)-50:])
+print(dataset_train.shape)
+print(dataset_test.shape)
+
+- converting data between 0 to 1
+scaler = MinMaxScaler(feature_range=(0,1))
+dataset_train = scaler.fit_transform(dataset_train)
+dataset_train[:5]
+
+dataset_test = scaler.transform(dataset_test)
+dataset_test[:5]
+
+- creating the dataset x- last 50 data y- first 50 data
+def create_dataset(df):
+	x = []
+	y = []
+	for i in range(50, df.shape[0]):
+		x.append(df[i-50:i, 0])
+		y.append(df[i,0])
+	x = np.array(x)
+	y = np.array(y)
+	return x,y
+
+x_train, y_train = create_dataset(dataset_train)
+x_train[:1]
+
+x_test, y_test = create_dataset(dataset_test)
+x_test[:1]
+
+x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1],1))
+x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1],1))
+
+- building model
+model = Sequential()
+model.add(LTSM(units=96, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96))
+model.add(Dropout(0.2))
+model.add(LTSM(units=1))
+
+model.compile(loss='mean_squared_error', optimizer='adam')
+
+model.fit(x_train, y_train, epochs=5,  batch_size=32)
+model.save('')
+
+model= load_model('')
+
+predictions = model.predict(x_test)
+predictions = scaler.inverse_transform(predictions)
+fig,ax = plt.subplots(figsize=8,4))
+plt.plot(df, color='red', label="True Price")
+ax.plot(range(len(y_train)+50,len(y_train)+50+len(predictions)),predictions,color='blue', label='Predicted Testing Price')
+plt.legend()
+
+y_test_scaled = scaler.inverse_transform(y_test.reshape(-1, 1))
+fig,ax = plt.subplots(figsize=(8,4))
+ax.plot(y_test_scaled, color='red', label='True Testing Price')
+plt.plot(predictions, color='blue', label='Predicted Testing Price')
+plt.legend()
+
+Mock Test C 2
+
+from google.colab import drive 
+drive.mount('')
+
+import numpy as np
+import pandas as pd
+import matplotlib.pyplot as plt
+from sklearn.preprocessing import MinMaxScaler
+from tensorflow.keras.models import Sequential, load_model
+from tensorflow.keras.layers import LSTM, Dense, Dropout
+import os
+
+df = pd.read_csv('')
+df.head()
+
+- preprocessing and feature extraction
+df = df[''].values
+df = df.reshape(-1,1)
+print(df.shape)
+df[:5]
+
+- splitting data 80% training 20% testing
+dataset_train = np.array(df[:int(df.shape[0]*0.8)])
+dataset_test = np.array(df[int(df.shape[0]*0.8)-50:])
+print(dataset_train.shape)
+print(dataset_test.shape)
+
+- converting data between 0 to 1
+scaler = MinMaxScaler(feature_range=(0,1))
+dataset_train = scaler.fit_transform(dataset_train)
+dataset_train[:5]
+
+dataset_test = scaler.transform(dataset_test)
+dataset_test[:5]
+
+- creating the dataset
+def create_dataset(df):
+	x = []
+	y = []
+	for i in range(50, df.shape[0]):
+		x.append(df[i-50:i, 0])
+	x = np.array(x)
+	y = np.array(y)
+	return x,y
+
+x_train, y_train = create_dataset(dataset_train)
+x_train[:1]
+
+x_test, y_test = create_dataset(dataset_test)
+x_test[:1]
+
+- reshaping features for LSTM Layer
+x_train = np.reshape(x_train, (x_train.shape[0], x_train.shape[1], 1))
+x_test = np.reshape(x_test, (x_test.shape[0], x_test.shape[1],1))
+
+- building model
+model = Sequential()
+model.add(LTSM(units=96, return_sequences=True, input_shape=(x_train.shape[1], 1)))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96, return_sequences=True))
+model.add(Dropout(0.2))
+model.add(LTSM(units=96))
+model.add(Dropout(0.2))
+model.add(Dense(units=1))
+
+model.compile(loss='mean_squared_error', optimizer='adam')
+
+model.fit(x_train,y_train, epochs=5, batch_size=32)
+model.save('')
+
+model = load_model('')
+
+- visualizing results
+predictions = model.predict(x_test)
+predictions = scaler.inverse_transform(predictions)
+
+fig,ax = plt.subplots(figsize(8,4))
+plt.plot(df, color='red', label="True Temperature")
+ax.plot(range(len(y_train)+50,len(y_train)+50+len(predictions)),predictions,color='blue', label="Predicted Temperature")
+plt.legend()
+
+y_test_scaled = scaler.inverse_transform(y_test.reshape(-1, 1)
+
+fig,ax = plt.subplots(figsize=(8,4))
+ax.plot(y_test_scaled, color='red', label='True Temperature')
+plt.plot(predictions, color='blue', label='Predicted Temperature')
+plt.legend()
