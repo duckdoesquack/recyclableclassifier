@@ -239,8 +239,3 @@ ax.plot(range(len(y_train)+50,len(y_train)+50+len(predictions)),predictions,colo
 plt.legend()
 
 y_test_scaled = scaler.inverse_transform(y_test.reshape(-1, 1)
-
-fig,ax = plt.subplots(figsize=(8,4))
-ax.plot(y_test_scaled, color='red', label='True Temperature')
-plt.plot(predictions, color='blue', label='Predicted Temperature')
-plt.legend()
