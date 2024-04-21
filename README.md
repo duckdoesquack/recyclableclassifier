@@ -20,13 +20,15 @@ However, this classifier is not so advanced as it can detect things wrongly. For
 - **(recyclableclassifier) C:\recyclableclassifier>pip install openvino==2024.0.0**
 - **(recyclableclassifier) C:\recyclableclassifier>pip install opencv-python==4.9.0.80**
 - **(recyclableclassifier) C:\recyclableclassifier>pip install ipywidgets==8.1.2**
+- **(recyclableclassifier) C:\recyclableclassifier>pip install flask**
+- **(recyclableclassifier) C:\recyclableclassifier>pip install flask_wtf**
 - **(recyclableclassifier) C:\recyclableclassifier>pip install gradio**
 - **(recyclableclassifier) C:\recyclableclassifier>jupyter lab**
 
 ## Classifying steps
 
 1. Click on Recycling_Classifier
-2. Open Recycling Classifier.ipynb
+2. Open `Recycling Classifier.ipynb`
 3. Restart kernal and run all cells
 4. Choose any image from your files (must be in jpeg form)
 5. Upload file
